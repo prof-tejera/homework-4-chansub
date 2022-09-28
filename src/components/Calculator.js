@@ -4,7 +4,7 @@ import Screen from "./Screen";
 import { useState } from "react";
 
 const Calculator = () => {
-  /** TODO: Here is where you are going to keep track of calculator state */
+  //useStates to keep track of calculator state
   const [equation, setEquation] = useState('');
   const [operation, setOperation] = useState('');
 
@@ -13,36 +13,40 @@ const Calculator = () => {
     setOperation('');
   }
 
-  const calculate = (n1, n2) => {
-    return parseInt(n1) + parseInt(n2);
+  const calculate = (n1, n2, o) => {
+
+    console.info("Do the math ", n1, o, n2);
+
+    if(o === '+') return parseInt(n1) + parseInt(n2);
+    else if(o === '-')  return parseInt(n1) - parseInt(n2); //not quite sure why subtract doesn't work?
+    else if(o === 'x')  return parseInt(n1) * parseInt(n2);
+    else if(o === '/')  return parseInt(n1) / parseInt(n2);
+    return;
   }
   
-  /** TODO: what happens when I click a number? */
+  //When I click a number, append to the equation
   const handleNumberClick = event => {
-    console.info("handleNumberClick called, number punched is ", event.target.value);
     let num = event.target.value;
     setEquation(equation.concat(num));
   };
 
 
-  /** TODO: what happens when I click an operation? */
+  //When I click on an operation
   const handleOperationClick = event => {
-      console.info("you clicked an operation event:", event.target.value);
       let oper = event.target.value;
 
-      if(oper === 'clear'){
-        clearScreen();
-      }
-      else if(oper === '='){
-        //do the math
-        console.info("calculate this", equation);
+      if(equation === '') return; //if there's no equation, don't proceed
+
+      if(oper === 'clear'){ clearScreen();}
+
+      //Todo: check that equation is valid first
+      if(oper === '='){
         let eArr = equation.split(/['+','-','x','/']/);
-        console.info("eArr",eArr[0], operation, eArr[1]);
         clearScreen();
         //do the math and display on screen
-        let ttl = calculate(eArr[0],eArr[1]);
-        console.info("ttl is", ttl);
-        
+        let ttl = calculate(eArr[0],eArr[1],operation);
+        console.info("answer is",ttl);
+        if(ttl) setEquation(ttl);
       }
       else if(['+','-','x','/'].indexOf(oper) >= 0) {
         if((operation === '') && (equation !== '')){
@@ -52,35 +56,47 @@ const Calculator = () => {
       }
   };
 
+  const mystyle = {
+    display: "flex",
+    flexFlow: "row wrap",
+    listStyle: "none",
+    color: "white",
+    backgroundColor: "#F7DC6F",
+    padding: "10px",
+    fontFamily: "Arial",
+    width:"350px"
+  };
 
+  
 
 
   return (
     <div>
-      <Screen value={equation} />
-      <div style={{ display: "flex" }}>
-        <div>
-          <Number value={0} onClick={handleNumberClick} />
-          <Number value={1} onClick={handleNumberClick} />
-          <Number value={2} onClick={handleNumberClick} />
-          <Number value={3} onClick={handleNumberClick} />
-          <Number value={4} onClick={handleNumberClick} />
-          <Number value={5} onClick={handleNumberClick} />
-          <Number value={6} onClick={handleNumberClick} />
-          <Number value={7} onClick={handleNumberClick} />
-          <Number value={8} onClick={handleNumberClick} />
-          <Number value={9} onClick={handleNumberClick} />
-        </div>
-        <div style={{ paddingLeft: 10 }}>
-          <Operation value="+" onClick={handleOperationClick} />
-          <Operation value="/" onClick={handleOperationClick} />
-          <Operation value="x" onClick={handleOperationClick} />
-          <Operation value="-" onClick={handleOperationClick} />
-          <Operation value="=" onClick={handleOperationClick} />
-          <Operation value="clear" onClick={handleOperationClick} />
-        </div>
-      </div>
-    </div>
+      <Screen className="screen" value={equation} />
+      <div style={mystyle}>
+            <Number value={1} onClick={handleNumberClick} />
+            <Number value={2} onClick={handleNumberClick} />
+            <Number value={3} onClick={handleNumberClick} />
+            <Operation value="/" onClick={handleOperationClick} />
+
+            <Number value={4} onClick={handleNumberClick} />
+            <Number value={5} onClick={handleNumberClick} />
+            <Number value={6} onClick={handleNumberClick} />
+            <Operation value="x" onClick={handleOperationClick} />
+
+            <Number value={7} onClick={handleNumberClick} />
+            <Number value={8} onClick={handleNumberClick} />
+            <Number value={9} onClick={handleNumberClick} />
+            <Operation value="-" onClick={handleOperationClick} />
+        
+            <Operation value="clear" onClick={handleOperationClick} />
+            <Number value={0} onClick={handleNumberClick} />
+            <Operation value="=" onClick={handleOperationClick} />
+            <Operation value="+" onClick={handleOperationClick} />
+          
+    </div>     
+  </div>
+    
   );
 };
 

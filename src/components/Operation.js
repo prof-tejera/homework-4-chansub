@@ -6,6 +6,7 @@ const Operation = ({ value, ...operationProps }) => {
         padding: 10,
         border: "1px solid black",
         width: 60,
+        textAlign: "center"
       }}
     >
       <button {...operationProps} value={value}>{value}</button>

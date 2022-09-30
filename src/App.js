@@ -2,7 +2,7 @@ import Calculator from "./components/Calculator";
 
 function App() {
   return (
-    <div
+    <div className="SusanaCalculator"
       style={{
         display: "flex",
         height: "100%",

@@ -7,7 +7,7 @@ const Calculator = () => {
   //useStates to keep track of calculator state
   const [equation, setEquation] = useState('');
   const [operation, setOperation] = useState('');
-
+  
   const clearScreen = () => {
     setEquation('');
     setOperation('');
@@ -15,13 +15,13 @@ const Calculator = () => {
 
   const calculate = (n1, n2, o) => {
 
-    console.info("Do the math ", n1, o, n2);
+    if((!n1)||(!n2)||(!o)) return 0;
 
     if(o === '+') return parseInt(n1) + parseInt(n2);
-    else if(o === '-')  return parseInt(n1) - parseInt(n2); //not quite sure why subtract doesn't work?
+    else if(o === '–') { return parseInt(n1)-parseInt(n2); } 
     else if(o === 'x')  return parseInt(n1) * parseInt(n2);
     else if(o === '/')  return parseInt(n1) / parseInt(n2);
-    return;
+    return 0;
   }
   
   //When I click a number, append to the equation
@@ -30,8 +30,7 @@ const Calculator = () => {
     setEquation(equation.concat(num));
   };
 
-
-  //When I click on an operation
+  //When I click on an operation, set the operation & append to the equation, if valid
   const handleOperationClick = event => {
       let oper = event.target.value;
 
@@ -39,16 +38,14 @@ const Calculator = () => {
 
       if(oper === 'clear'){ clearScreen();}
 
-      //Todo: check that equation is valid first
       if(oper === '='){
-        let eArr = equation.split(/['+','-','x','/']/);
+        let eArr = equation.split(/['+','–','x','/']/);
         clearScreen();
         //do the math and display on screen
         let ttl = calculate(eArr[0],eArr[1],operation);
-        console.info("answer is",ttl);
-        if(ttl) setEquation(ttl);
+        if(ttl) setEquation(ttl.toString());
       }
-      else if(['+','-','x','/'].indexOf(oper) >= 0) {
+      else if(['+','–','x','/'].indexOf(oper) >= 0) {
         if((operation === '') && (equation !== '')){
           setOperation(oper);
           setEquation(equation.concat(oper));
@@ -67,9 +64,6 @@ const Calculator = () => {
     width:"350px"
   };
 
-  
-
-
   return (
     <div>
       <Screen className="screen" value={equation} />
@@ -87,7 +81,7 @@ const Calculator = () => {
             <Number value={7} onClick={handleNumberClick} />
             <Number value={8} onClick={handleNumberClick} />
             <Number value={9} onClick={handleNumberClick} />
-            <Operation value="-" onClick={handleOperationClick} />
+            <Operation value="–" onClick={handleOperationClick} />
         
             <Operation value="clear" onClick={handleOperationClick} />
             <Number value={0} onClick={handleNumberClick} />

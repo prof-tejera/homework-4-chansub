@@ -6,9 +6,10 @@ const Number = ({ value, onClick }) => {
         padding: 10,
         border: "1px solid black",
         width: 60,
+        textAlign: "center"
       }}
     >
-      {value}
+      <button value={value} onClick={onClick}>{value}</button>
     </div>
   );
 };
